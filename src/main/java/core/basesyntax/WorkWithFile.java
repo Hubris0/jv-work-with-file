@@ -5,29 +5,32 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class WorkWithFile {
+    private static final int OPERATION_INDEX = 0;
+    private static final int COUNT_INDEX = 1;
+    private static final int SUPPLY_INDEX = 0;
+    private static final int BUY_INDEX = 1;
+    private static final String DELIMITER = ",";
+    private static final String OPERATION_BUY = "buy";
+    private static final String OPERATION_SUPPLY = "supply";
 
-    public void getStatistic(String fromFileName, String toFileName) {
-        String report = readFromFile(fromFileName);
+    public String getStatistic(String fromFileName, String toFileName) {
+        String report = generateReport(readFromFile(fromFileName));
         writeToFile(report, toFileName);
+        return report;
     }
 
-    public String readFromFile(String fileName) {
+    public int[] readFromFile(String fileName) {
         int supplyCount = 0;
         int buyCount = 0;
-        String delimeter = ",";
-        int operationIndex = 0;
-        int countIndex = 1;
-        String operationBuy = "buy";
-        String operationSupply = "supply";
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line = reader.readLine();
             while (line != null) {
-                String[] parts = line.split(delimeter);
-                String operation = parts[operationIndex];
-                int count = Integer.parseInt(parts[countIndex]);
-                if (operation.equals(operationBuy)) {
+                String[] parts = line.split(DELIMITER);
+                String operation = parts[OPERATION_INDEX];
+                int count = Integer.parseInt(parts[COUNT_INDEX]);
+                if (operation.equals(OPERATION_BUY)) {
                     buyCount += count;
-                } else if (operation.equals(operationSupply)) {
+                } else if (operation.equals(OPERATION_SUPPLY)) {
                     supplyCount += count;
                 }
                 line = reader.readLine();
@@ -35,10 +38,7 @@ public class WorkWithFile {
         } catch (IOException e) {
             throw new RuntimeException("File can't be read", e);
         }
-        int result = supplyCount - buyCount;
-        return "supply," + supplyCount + System.lineSeparator()
-                + "buy," + buyCount + System.lineSeparator()
-                + "result," + result;
+        return new int[]{supplyCount, buyCount};
     }
 
     public void writeToFile(String report, String toFileName) {
@@ -47,5 +47,14 @@ public class WorkWithFile {
         } catch (IOException e) {
             throw new RuntimeException("File can't be written", e);
         }
+    }
+
+    public String generateReport(int[] operationCounts) {
+        int supplyCount = operationCounts[SUPPLY_INDEX];
+        int buyCount = operationCounts[BUY_INDEX];
+        int result = supplyCount - buyCount;
+        return OPERATION_SUPPLY + DELIMITER + supplyCount + System.lineSeparator()
+                + OPERATION_BUY + DELIMITER + buyCount + System.lineSeparator()
+                + "result" + DELIMITER + result;
     }
 }
