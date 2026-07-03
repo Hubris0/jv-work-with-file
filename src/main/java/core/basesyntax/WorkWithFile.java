@@ -27,9 +27,9 @@ public class WorkWithFile {
             throw new RuntimeException("File can't be read", e);
         }
         int result = supplyCount - buyCount;
-        String resultString = "supply," + supplyCount + System.lineSeparator() +
-                "buy," + buyCount + System.lineSeparator() +
-                "result," + result;
+        String resultString = "supply," + supplyCount + System.lineSeparator()
+                + "buy," + buyCount + System.lineSeparator()
+                + "result," + result;
         try (java.io.FileWriter writer = new java.io.FileWriter(toFileName)) {
             writer.write(resultString);
         } catch (IOException e) {
