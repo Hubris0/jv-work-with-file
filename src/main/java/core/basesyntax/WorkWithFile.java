@@ -14,20 +14,20 @@ public class WorkWithFile {
     public String readFromFile(String fileName) {
         int supplyCount = 0;
         int buyCount = 0;
-        String DELIMITER = ",";
-        int OPERATION_INDEX = 0;
-        int COUNT_INDEX = 1;
-        String OPERATION_BUY = "buy";
-        String OPERATION_SUPPLY = "supply";
+        String delimeter = ",";
+        int operationIndex = 0;
+        int countIndex = 1;
+        String operationBuy = "buy";
+        String operationSupply = "supply";
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line = reader.readLine();
             while (line != null) {
-                String[] parts = line.split(DELIMITER);
-                String operation = parts[OPERATION_INDEX];
-                int count = Integer.parseInt(parts[COUNT_INDEX]);
-                if (operation.equals(OPERATION_BUY)) {
+                String[] parts = line.split(delimeter);
+                String operation = parts[operationIndex];
+                int count = Integer.parseInt(parts[countIndex]);
+                if (operation.equals(operationBuy)) {
                     buyCount += count;
-                } else if (operation.equals(OPERATION_SUPPLY)) {
+                } else if (operation.equals(operationSupply)) {
                     supplyCount += count;
                 }
                 line = reader.readLine();
